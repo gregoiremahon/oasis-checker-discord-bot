@@ -35,7 +35,7 @@ async def on_ready():
         global last_average_grade
         last_average_grade = last_average
     except:
-        await channel.send('OasisChecker est en ligne !') 
+        await channel.send('14.90') 
 
 @client.event
 async def on_message(message):
@@ -98,25 +98,22 @@ class main:
                 exit()
     def check_new_grade(self):
         sleep(self.time_sleeper)
-        oasis_soup = BeautifulSoup(self.browser.page_source, 'html.parser')
-        oasis_page_content = oasis_soup.get_text()
-        self.average_grade = self.browser.find_element("xpath", '//*[@id="Semester21214249_2022_1"]/h2/span[2]')
-        print('MOYENNE', self.average_grade)
-        try:
-            if self.average_grade is not None:
-                return float(self.average_grade) != float(self.last_average_grade)
-            else:
-                print(oasis_page_content)
-        except:
-                print("Erreur pas d'ancienne moyenne générale trouvée...!")
-                self.browser.quit()
+        self.average_grade_soup = BeautifulSoup(self.browser.page_source, 'html.parser')
+        span = self.average_grade_soup.find("span", class_="semesterAverage")
+        self.average_grade = span.text.strip()
+        self.average_grade = float(self.average_grade.replace(",", "."))
+        print("AVERAGE : ",self.average_grade)
+        if self.average_grade is not None:
+            return self.average_grade != 14 #self.last_average_grade
 
     def run_bot(self):
        self.client.run(self.TOKEN)
 
 if __name__ == "__main__":
+    
     OasisChecker = main(client, last_average_grade)
     OasisChecker.oasis_login()
     OasisChecker.check_grades()
     OasisChecker.check_new_grade()
     OasisChecker.run_bot()
+    print("Last average grade : ", last_average_grade)
