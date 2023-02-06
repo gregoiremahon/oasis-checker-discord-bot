@@ -44,15 +44,17 @@ class main:
         self.browser = Firefox()
 
     def Login(self):
-        print("j essaie de me connecter")
-        self.response = self.browser.get(self.OASIS_URL)
-        username_field = self.browser.find_element("xpath", '//*[@id="LoginForm"]/div[1]/input')
-        password_field = self.browser.find_element("xpath", '//*[@id="LoginForm"]/div[2]/input')
-        login_button = self.browser.find_element("xpath", '//*[@id="SubmitLoginBtn"]')
-        username_field.send_keys(self.username)
-        password_field.send_keys(self.password)
-        login_button.click()
-        print("LOGIN ERROR")
+        try:
+            self.response = self.browser.get(self.OASIS_URL)
+            username_field = self.browser.find_element("xpath", '//*[@id="LoginForm"]/div[1]/input')
+            password_field = self.browser.find_element("xpath", '//*[@id="LoginForm"]/div[2]/input')
+            login_button = self.browser.find_element("xpath", '//*[@id="SubmitLoginBtn"]')
+            username_field.send_keys(self.username)
+            password_field.send_keys(self.password)
+            login_button.click()
+            print("Connecté à Oasis !")
+        except:
+            print("Erreur lors de la connexion à Oasis !")
 
     def run(self):
        self.client.run(self.TOKEN)
