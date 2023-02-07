@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
+from selenium.webdriver.firefox.options import Options
 from time import sleep
 from datetime import datetime
 
@@ -25,9 +26,9 @@ ChannelID = os.getenv('CHANNEL_ID')
 async def on_ready():
     print(f'Connecté en tant que {client.user}.')
     channel = client.get_channel(int(ChannelID))
-    # Get last bot message in the current chann
     if NewGrade == True:
         await channel.send(dt_string + " @everyone : Nouvelle note disponible sur Oasis !")
+        exit()
 
 @client.event
 async def on_message(message):
@@ -50,7 +51,9 @@ class main:
         self.OASIS_URL = "https://polytech-sorbonne.oasis.aouka.org/?#codepage=MYMARKS"
         self.username = os.getenv('OASIS_USERNAME')
         self.password = os.getenv('OASIS_PASSWORD')
-        self.browser = Firefox()
+        self.Firefox_options = Options()
+        self.Firefox_options.add_argument("--headless")
+        self.browser = Firefox(options = self.Firefox_options)
         self.response = None
         self.time_sleeper = 2
         self.ErrorCouter = 0
@@ -66,7 +69,6 @@ class main:
             password_field.send_keys(self.password)
             login_button.click()
             print("Connecté à Oasis !")
-            
         except:
             print("Erreur lors de la connexion à Oasis !")
 
@@ -98,6 +100,7 @@ class main:
                 print("Erreur lors de la vérification des notes !")
                 self.browser.quit()
                 exit()
+
     def check_new_grade(self):
         sleep(self.time_sleeper)
         self.average_grade_soup = BeautifulSoup(self.browser.page_source, 'html.parser')
@@ -125,5 +128,7 @@ if __name__ == "__main__":
     OasisChecker.read_last_average_grade()
     NewGrade = OasisChecker.check_new_grade()
     Average_grade = OasisChecker.average_grade
-    print("Average grade : ", Average_grade)
-    OasisChecker.run_bot()
+    if NewGrade == False: 
+        exit()
+    else:
+        OasisChecker.run_bot()
