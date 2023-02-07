@@ -1,4 +1,3 @@
-# bot.py
 import os
 import discord
 from dotenv import load_dotenv
@@ -6,12 +5,15 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver import Firefox
 from time import sleep
+from datetime import datetime
 
 intents = discord.Intents().all()
 client = discord.Client(intents=intents)
-
-
+NewGrade = False
+Average_grade = 0
 last_average_grade = None
+Curr_date_time = datetime.now()
+dt_string = Curr_date_time.strftime("%d/%m/%Y %H:%M:%S")
 
 # Getting the token and the guild id from the .env file
 load_dotenv()
@@ -23,19 +25,9 @@ ChannelID = os.getenv('CHANNEL_ID')
 async def on_ready():
     print(f'Connecté en tant que {client.user}.')
     channel = client.get_channel(int(ChannelID))
-
-    # Get last bot message in the current channel
-    try:
-        messages = await channel.history(limit=1).flatten()
-
-        # Parse the last message to get the last average grade
-        for message in messages:
-            if message.author == client.user:
-                last_average = message.content.split(":")[1].strip()    
-        global last_average_grade
-        last_average_grade = last_average
-    except:
-        await channel.send('14.90') 
+    # Get last bot message in the current chann
+    if NewGrade == True:
+        await channel.send(dt_string + " @everyone : Nouvelle note disponible sur Oasis !")
 
 @client.event
 async def on_message(message):
@@ -62,7 +54,7 @@ class main:
         self.response = None
         self.time_sleeper = 2
         self.ErrorCouter = 0
-        self.average_grade = last_average_grade
+        self.average_grade = None
 
     def oasis_login(self):
         try:
@@ -77,7 +69,17 @@ class main:
             
         except:
             print("Erreur lors de la connexion à Oasis !")
-    
+
+    #read the last average grade in a txt file
+    def read_last_average_grade(self):
+        with open("last_average_grade.txt", 'r') as InputFile:
+            try:
+                lines = InputFile.readlines()
+                for Value in lines:
+                    self.last_average_grade = Value.replace(',', '.')
+            except:
+                self.last_average_grade = 0
+
     def check_grades(self):
         sleep(self.time_sleeper)
         oasis_soup = BeautifulSoup(self.browser.page_source, 'html.parser')
@@ -87,7 +89,7 @@ class main:
                 print("Connexion réussie !")
                 print("Vérification des notes...")
             else:
-                print(oasis_page_content)
+                print("Erreur lors de la connexion à Oasis !")
         except:
             self.ErrorCouter += 1
             self.time_sleeper += 1
@@ -104,8 +106,14 @@ class main:
         self.average_grade = float(self.average_grade.replace(",", "."))
         print("AVERAGE : ",self.average_grade)
         if self.average_grade is not None:
-            return self.average_grade != 14 #self.last_average_grade
-
+            if float(self.average_grade) != float(self.last_average_grade):
+                with open('last_average_grade.txt', 'w') as InputFile:
+                    InputFile.write(str(self.average_grade))
+                self.average_grade = self.last_average_grade
+                return True
+            else:
+                return False
+            
     def run_bot(self):
        self.client.run(self.TOKEN)
 
@@ -114,6 +122,8 @@ if __name__ == "__main__":
     OasisChecker = main(client, last_average_grade)
     OasisChecker.oasis_login()
     OasisChecker.check_grades()
-    OasisChecker.check_new_grade()
+    OasisChecker.read_last_average_grade()
+    NewGrade = OasisChecker.check_new_grade()
+    Average_grade = OasisChecker.average_grade
+    print("Average grade : ", Average_grade)
     OasisChecker.run_bot()
-    print("Last average grade : ", last_average_grade)
