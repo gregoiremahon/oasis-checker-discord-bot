@@ -1,3 +1,9 @@
+'''
+╔═╗╔═╗╔═╗╦╔═╗  ╔═╗╦ ╦╔═╗╔═╗╦╔═╔═╗╦═╗
+║ ║╠═╣╚═╗║╚═╗  ║  ╠═╣║╣ ║  ╠╩╗║╣ ╠╦╝
+╚═╝╩ ╩╚═╝╩╚═╝  ╚═╝╩ ╩╚═╝╚═╝╩ ╩╚═╝╩╚═      
+Version 1.0.0                                                                          
+'''                                                                                
 import os
 import discord
 from dotenv import load_dotenv
