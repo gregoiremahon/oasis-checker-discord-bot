@@ -136,6 +136,10 @@ if __name__ == "__main__":
     Average_grade = OasisChecker.average_grade
     if NewGrade == False:
         print(dt_string + " / No new grade available, retrying in 60 seconds...")
+        OasisChecker.browser.close()
+        OasisChecker.browser.quit()
         exit()
     else:
         OasisChecker.run_bot()
+        OasisChecker.browser.close()
+        OasisChecker.browser.quit()
