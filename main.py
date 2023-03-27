@@ -110,7 +110,7 @@ class main:
     def check_new_grade(self):
         sleep(self.time_sleeper)
         self.average_grade_soup = BeautifulSoup(self.browser.page_source, 'html.parser')
-        span = self.average_grade_soup.find("span", class_="semesterAverage")
+        span = self.average_grade_soup.find("span", class_="yearAverage")
         self.average_grade = span.text.strip()
         self.average_grade = float(self.average_grade.replace(",", "."))
         print("AVERAGE : ",self.average_grade)

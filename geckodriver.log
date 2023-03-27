@@ -1,0 +1,15 @@
+1679899468458	geckodriver	INFO	Listening on 127.0.0.1:50494
+1679899471503	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--remote-debugging-port" "504 ... 5" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\gregm\\AppData\\Local\\Temp\\rust_mozprofileiquu8D"
+*** You are running in headless mode.
+1679899472243	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1679899472251	Marionette	INFO	Listening on port 50503
+Read port: 50503
+WebDriver BiDi listening on ws://127.0.0.1:50495
+1679899472506	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\gregm\\AppData\\Local\\Temp\\rust_mozprofileiquu8D\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:50495/devtools/browser/5aeb9f61-c2e8-4be3-824e-5993b683d4ac
+JavaScript warning: https://polytech-sorbonne.oasis.aouka.org/?#codepage=MYMARKS, line 1719: unreachable code after return statement
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://polytech-sorbonne.oasis.aouka.org."
+JavaScript warning: https://polytech-sorbonne.oasis.aouka.org/?#codepage=MYMARKS, line 1730: unreachable code after return statement
