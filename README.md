@@ -20,30 +20,25 @@ The Oasis Checker Discord Bot is an automated solution designed to notify studen
 - **Cron:** Task scheduling for regular bot execution.
 
 ## Setup and Installation
-1. **Dependencies Installation:**
-   Ensure you have Python installed, and then install the necessary packages:
-   ```bash
-   pip install selenium bs4 python-dotenv schedule
-   ```
 
-2. **Environment Configuration:**
+1. **Environment Configuration:**
    Store your Discord bot TOKEN, channel ID, and Oasis login credentials in a `.env` file.
 
-3. **Docker Image:**
-   The bot is packaged as a Docker image. Pull the image from Docker Hub:
+2. **Docker Image:**
+   The bot is packaged as a Docker image, with all dependencies handled in the Dockerfile. Pull the image from Docker Hub:
    ```bash
    docker pull gregoiremahon1/oasis-discord-bot
    ```
 
-4. **Cron Job Setup:**
+3. **Cron Job Setup:**
    The bot is executed periodically via a cron job on the Azure VM. The cron command is as follows:
    ```bash
-   */30 * * * * docker run --rm -v /home/user/.env:/app/.env user1/oasis-discord-bot:latest >> /home/user/logs_bot_oasis/logs_bot.log 2>&1
+   */30 * * * * docker run --rm -v /home/gregoiremahon/.env:/app/.env gregoiremahon1/oasis-discord-bot:latest >> /home/gregoiremahon/logs_bot_oasis/logs_bot.log 2>&1
    ```
-   This command ensures that the bot runs every 30 minutes, and logs are recorded for monitoring and troubleshooting.
+   This command ensures that the bot runs every 30 minutes, and logs are recorded for monitoring and troubleshooting. It also mounts your .env file containing your credentials.
 
 ## Usage
 - **Starting the Bot:** 
   Once the setup is complete, the bot will automatically start according to the schedule set by the cron job.
 - **Monitoring:** 
-  Check the logs at `/home/user/logs_bot_oasis/logs_bot.log` for activity and potential issues.
+  Check the logs at `/home/gregoiremahon/logs_bot_oasis/logs_bot.log` for activity and potential issues.
